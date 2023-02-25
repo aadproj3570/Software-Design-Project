@@ -1,0 +1,42 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+  body{
+      font-family: montserrat;
+      background-image: url("bgimage.png");
+      background-repeat: no-repeat;
+      background-size: 1500px 800px;
+  
+  }
+  .row.content {height: 450px}
+  
+  .sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+    height: 100%;
+  }
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+    font-family: montserrat;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+  }
+  @media screen and (max-width: 767px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+    }
+    .row.content {height:auto;} 
+  }
+  .container {
+  max-width: 1px;
+  margin: auto;
+  }
+  #container{width:45%;}
+  #left{float:left;}
+  #right{float:right;}
