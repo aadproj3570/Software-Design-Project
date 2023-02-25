@@ -1,0 +1,15 @@
+body {
+    background-image: url("bgimage.png");
+    background-repeat: no-repeat;
+    background-size: 1500px 800px;
+}
+footer {
+    background-color: #000000;
+    color: white;
+    padding: 15px;
+    font-family: montserrat;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
