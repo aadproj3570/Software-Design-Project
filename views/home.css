@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: rgb(0, 0, 0);
+  font-family: montserrat;
+  font-size: 50px;
+}
+
+#container {
+  min-height: 85%;
+}
+
+#main {
+  overflow: auto;
+  padding-bottom: 100px;
+}
+
+footer {
+  background-color: #000000;
+  color: white;
+  height: 150px;
+  position: relative;
+  margin-top: -100px;
+  clear: both;
+}
+
+html,
+body {
+  height: 100%;
+  background-image: url("bgimage.png");
+  background-repeat: no-repeat;
+  background-size: 2000px 1900px;
+}
+
+.topnav {
+  background-color: rgb(0, 0, 0);
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+.button {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 150px;
+}
+
+.btn {
+  border: 1px solid #555;
+  padding: 10px 30px;
+  color: rgb(248, 248, 248);
+  text-decoration: none;
+}
