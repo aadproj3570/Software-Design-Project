@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Fuel Prediction Project</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+
+    <center><br><br>
+    
+    <img class="img-responsive" width="450" height="450" src="tsfuel.png"></center>
+<br><br><br>
+<center>
+    
+    <h1>Welcome to TEXAS STANDARD Fuel company.<br></h1>
+    <h2>Please click below to get started with your quote.</h2>
+<br>
+
+    <div class="container">
+    <button onclick="document.getElementById('id01').style.display='block'" style="width:150px; height: 50px" >Get my Quote</button>
+
+<div id="id01" class="modal">
+  
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+
+    <form class="modal-content animate" id ="form" action="home.html" method="get" >
+    <div class="form-group">
+      <label><b>Username</b></label>
+      <input type="text" placeholder="Please Enter Username" name="username" class="form-control" id="username" required="required"/>
+    </div>
+      
+    <div class="form-group">
+        <label><b>Password</b></label>
+        <input type="password" placeholder="Please Enter Password" name="password" required="required"/>
+    </div>
+      
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+
+    <div class="container" style="background-color:#ffffff">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw">New user? <a href="register.html">Click here to register</a></span>  
+    </div>
+
+</form>
+</div>
+    </div>
+
+</center>
+<script>
+
+var modal = document.getElementById('id01');
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
