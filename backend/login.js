@@ -75,4 +75,25 @@ describe("POST /login", () => {
           done();
         });
     });
-},);
+
+    describe("GET /login", () => {
+      it("Should get the login page with 200 status", (done) => {
+          chai.request(server)
+              .get("/login")
+              .end((err, response) => {
+                  response.should.have.status(200);
+              done();
+              })
+      })
+  })
+
+    describe("POST /login", () => {
+      it("Should process the login credentials with 200 status", (done) => {
+          chai.request(server)
+              .post("/login")
+              .end((err, response) => {
+                  response.should.have.status(200);
+              done();
+              })
+      })
+  })},);
