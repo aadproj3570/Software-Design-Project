@@ -105,3 +105,27 @@ app.get('/', checkAuthenticated, async (req, res) => {
         res.render('index.ejs', {name: req.user.username});
     }
 })
+
+const PORT = process.env.PORT || 3000;
+module.exports = {
+    checkAuth: function(){
+        return checkAuthenticated;
+    },
+    checkHist: function(){
+        return hist;
+    },
+    checkUsername: function(){
+        return users.inputUsername;
+    },
+    checkPassword: function(){
+        return users.inputPassword;
+    },
+    user: function() {
+        return userInfo;
+    },
+    
+    fuel_quote: function() {
+        return Fuel_quote;
+    },
+    server: app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+}
