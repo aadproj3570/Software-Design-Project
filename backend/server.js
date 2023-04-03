@@ -105,6 +105,101 @@ app.get('/', checkAuthenticated, async (req, res) => {
         res.render('index.ejs', {name: req.user.username});
     }
 })
+app.get('/login', checknotAuthenticated, (req, res) => {
+    res.render('login.ejs')
+})
+
+app.post('/login', checknotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}))
+
+app.get('/register', checknotAuthenticated, (req, res) => {
+    res.render('register.ejs')
+})
+
+app.get('/profile', checkAuthenticated, (req,res) => {
+    res.render('profile.ejs', {full_name: userInfo.full_name, 
+    street1: userInfo.street1, 
+    street2: userInfo.street2,
+    state: userInfo.state,
+    city: userInfo.city,
+    zip: userInfo.zip});
+})
+
+const users = []
+app.post('/register', checknotAuthenticated, async (req, res) => {
+    try{
+      const hashedPassword = await bcrypt.hash(req.body.inputPassword, 10 )
+      users.push({
+          id: Date.now().toString(),
+          inputUsername: req.body.inputUsername,
+          inputPassword: hashedPassword
+      })
+    await UserInfo.find({ username: req.body.inputUsername }).then((users) =>{
+        if (users.length > 0){
+            // console.log(users.length);
+            //users.splice(0, users.length);
+            res.redirect('/register');
+        } else{
+            const userInfo = new UserInfo ({
+                username: req.body.inputUsername,
+                password: hashedPassword,
+                new_user: true
+            })
+            userInfo.save();
+            console.log(userInfo);
+            res.redirect('/login')
+        }
+    })
+    } catch{
+      res.redirect('/register')
+    }
+})
+
+
+app.get('/editProfile', checkAuthenticated, (req, res) => {
+    res.render('editProfile.ejs');
+})
+
+app.post('/editProfile', checkAuthenticated, async (req,res) => {
+    //console.log(req.body);
+    userInfo = req.body;
+    const filter = { username: req.user.username };
+    const user = await User.updateOne(filter, {
+        full_name: userInfo.full_name, 
+        street1 : userInfo.street1, 
+        street2 : userInfo.street2, 
+        state: userInfo.state,
+        city: userInfo.city, 
+        zip: userInfo.zip,
+        username: req.user.username
+    }, { upsert: true });
+    await User.find(filter).then(async (info) => {
+        //console.log("info");
+        //console.log(info);
+        userInfo = { 
+            full_name: info[0].full_name,
+            street1: info[0].street1,
+            street2: info[0].street2,
+            state: info[0].state,
+            city: info[0].city,
+            zip: info[0].zip
+        };
+    })
+    //console.log(userInfo);
+    res.redirect('/profile');
+})
+app.get('/logout', (req, res) => {
+    req.logOut()
+    res.redirect('/login')
+})
+
+app.delete('/logout', (req, res) => {
+    req.logOut()
+    res.redirect('/login')
+})
 
 const PORT = process.env.PORT || 3000;
 module.exports = {
