@@ -200,6 +200,54 @@ app.delete('/logout', (req, res) => {
     req.logOut()
     res.redirect('/login')
 })
+const hist = []
+// Gets fuel quote history
+app.get('/api/history', (req, res) => res.json(hist));
+
+app.get('/history', checkAuthenticated, async (req, res) => {
+    const filter = { username: req.user.username }
+    await FuelQuote.find(filter).then((quotes) =>{
+        var i = 0;
+        for (i = 0; i < quotes.length; i++){
+            hist.push({
+                gallons: quotes[i].gallons,
+                d_address: quotes[i].delivery_address,
+                d_date: quotes[i].delivery_date,
+                price_per: quotes[i].price_per,
+                total: quotes[i].total
+            });
+        }
+        console.log(hist);
+    })
+
+
+    res.render('history.ejs', {hist: hist});
+    hist.splice(0, hist.length);
+})
+app.get('/fuel_quote', checkAuthenticated, (req, res) => {
+    let currentDate = new Date();
+    let cDay = currentDate.getDate()
+    let cMonth = currentDate.getMonth() + 1
+    let cYear = currentDate.getFullYear()
+    let min_date = cYear + '-' + cMonth + '-' + cDay
+    if(cMonth < 10){
+        min_date = cYear + '-0' + cMonth
+        if(cDay < 10){
+            min_date = min_date + '-0' + cDay
+        } else{
+            min_date = min_date + '-' + cDay
+        }
+    } else{
+        min_date = cYear + '-' + cMonth
+        if(cDay < 10){
+            min_date = min_date + '-0' + cDay
+        } else{
+            min_date = min_date + '-' + cDay
+        }
+    }
+    //console.log(min_date)
+    res.render('fuel_quote.ejs', {user:userInfo, location_f: req.user.first_time, min_date});
+})
 
 const PORT = process.env.PORT || 3000;
 module.exports = {
