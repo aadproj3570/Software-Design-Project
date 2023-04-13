@@ -20,40 +20,38 @@ const db = mongoose.connection
 db.on('error', (error)=>console.error(error))
 db.once('open', ()=>console.log('Connected to Database'))
 
-const userSchema = new mongoose.Schema({
-    full_name: {type: String, required: true},
-    street1: {type: String, required: true},
-    street2: String,
-    city: {type: String, required: true},
-    zip: {type: String, required: true},
-    state: { type: String, required: true },
-    username: { type: String, required: true }
+const priceschema = new mongoose.Schema({
+  user: { type: String, required: true },
+  price: { type: String, required: true },
+  location: { type: String, required: true }
 });
-const userInfoSchema = new mongoose.Schema({
-    username: {type: String, required: true },
-    password: {type: String, required: true },
-    new_user: {type: Boolean, default: true},
+
+const userinfoschema = new mongoose.Schema({
+  username: { type: String, required: true },
+  password: { type: String, required: true }
 });
-const fuelQuoteSchema = new mongoose.Schema({
-    gallons: {type: Number, required: true },
-    delivery_address: {type: String, required: true},
-    delivery_date: {type: Date, required: true },
-    price_per: {type: Number, required: true },
-    total: {type: Number, required: true },
-    username: {type: String, required: true },
+
+const clientinfoschema = new mongoose.Schema({
+  fullname: { type: String, required: true },
+  address1: { type: String, required: true },
+  address2: { type: String },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  zipcode: { type: String, required: true }
 });
 
 let userInfo = {
     full_name: '', 
-    street1: '', 
-    street2: 'N/A',
+    address1: '', 
+    address2: 'N/A',
     state: '',
     city: '', 
-    zip: ''
+    zipcode: ''
 };
 
-const User = mongoose.model("User", userSchema)
-const FuelQuote = mongoose.model("FuelQuote", fuelQuoteSchema)
+const price = mongoose.model('price', priceschema);
+const userinfo = mongoose.model('userinfo', userinfoschema);
+const clientInfo = mongoose.model('clientInfo', clientinfoschema);
 
 const UserInfo = require('./models/UserInfo')
 const initializePassport = require('./passport-config') 
@@ -220,7 +218,6 @@ app.get('/history', checkAuthenticated, async (req, res) => {
         console.log(hist);
     })
 
-
     res.render('history.ejs', {hist: hist});
     hist.splice(0, hist.length);
 })
@@ -248,6 +245,47 @@ app.get('/fuel_quote', checkAuthenticated, (req, res) => {
     //console.log(min_date)
     res.render('fuel_quote.ejs', {user:userInfo, location_f: req.user.first_time, min_date});
 })
+
+function Fuel_quote(gallons, d_address, d_date, price_per) { 
+    this.gallons = gallons; 
+    this.d_address = d_address;
+    this.d_date = d_date;
+    this.price_per = price_per;
+    this.total = gallons * price_per;
+}
+
+app.post('/fuel_quote', checkAuthenticated, async (req,res) => {
+    const filter = { username: req.user.username }
+    if(req.user.first_time){
+        const update = { first_time: false }
+        await UserInfo.findOneAndUpdate(filter, update)
+    }
+    let fuel = new Fuel_quote(req.body.gallons_requested,
+        req.body.delivery_address,
+        req.body.delivery_date,
+        req.body.price_per_gallon, 
+        req.body.total_due);
+    const fuelQuote = new FuelQuote({
+        gallons: fuel.gallons,
+        delivery_address: fuel.d_address,
+        delivery_date: fuel.d_date,
+        price_per: fuel.price_per,
+        total: fuel.total,
+        username: req.user.username
+    })
+    await fuelQuote.save();
+    res.redirect('/history');
+})
+
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) { return next() }
+    res.redirect('/login')
+}
+
+function checknotAuthenticated(req, res, next){
+    if (req.isAuthenticated()) { return res.redirect('/') }
+    next()
+}
 
 const PORT = process.env.PORT || 3000;
 module.exports = {
