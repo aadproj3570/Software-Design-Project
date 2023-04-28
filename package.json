@@ -1,0 +1,26 @@
+{
+  "name": "software-design-project",
+  "version": "1.0.0",
+  "description": "[![My Skills](https://skillicons.dev/icons?i=mongodb,express,react,nodejs)](https://skillicons.dev)",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --reporter=text mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aadproj3570/Software-Design-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aadproj3570/Software-Design-Project/issues"
+  },
+  "homepage": "https://github.com/aadproj3570/Software-Design-Project#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "chai": "^4.3.7",
+    "istanbul": "^0.4.5",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
+  }
+}
