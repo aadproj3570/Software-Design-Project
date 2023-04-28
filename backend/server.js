@@ -13,7 +13,7 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const path = require("path")
 
-const uri = ""
+const uri = "mongodb+srv://thienanvandb:r7CKoXqIem9fL1R8@cluster0.8msb7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true})
 
 const db = mongoose.connection
